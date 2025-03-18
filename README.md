@@ -1,5 +1,5 @@
 # GPAM
-This repository contains the R codes for the paper "Generalized Point Process Additive Models".
+### This repository contains the R codes for the paper "Generalized Point Process Additive Models".
 
 The following R codes can be used to obtain the simulation results in the paper. 
 
@@ -13,13 +13,14 @@ The results returned by these R codes include the AUC estimate and Beta estimate
 
 
 
-Make sure to install all required packages (see below), in addition to the included penReg_0.1.0.tar.gz package.
 
-To install penReg_0.1.0.tar.gz package, run the following codes in R 
+### Make sure to install all required packages (see below), in addition to the included penReg_0.1.0.tar.gz package.
+
+## To install penReg_0.1.0.tar.gz package, run the following codes in R 
 
 install.packages('penReg_0.1.0.tar.gz',type='source',repos=NULL)
 
-To install all the other required packages, run the following codes in R 
+## To install all the other required packages, run the following codes in R 
 
 require_packages = c("MCMCpack","data.table","survival","splines",
                     "Matrix", "Rcpp","RcppEnsmallen","RcppArmadillo",
