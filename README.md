@@ -15,47 +15,24 @@ The results returned by these R codes include the AUC estimate and Beta estimate
 
 Make sure to install all required packages (see below), in addition to the included penReg_0.1.0.tar.gz package.
 
-To install penReg_0.1.0.tar.gz package, use install.packages('penReg_0.1.0.tar.gz',type='source',repos=NULL)
+To install penReg_0.1.0.tar.gz package, run the following codes in R 
 
-require(MCMCpack)
+install.packages('penReg_0.1.0.tar.gz',type='source',repos=NULL)
 
-require(data.table)
+To install all the other required packages, run the following codes in R 
 
-require(survival)
+require_packages = c("MCMCpack","data.table","survival","splines",
+                    "Matrix", "Rcpp","RcppEnsmallen","RcppArmadillo",
+                    "methods","parallel","pracma","RSpectra",
+                    "lokern","glmnet","mgcv","gamsel","fdapace",
+                    "PtProcess", "MASS","adestr","ADCT")
 
-require(splines)
+new_packages = lapply(require_packages, require, character.only = TRUE)
 
-require(Matrix)
+new_packages = require_packages[!unlist(new_packages)]
 
-require(Rcpp)
+if(length(new_packages)) {install.packages(new_packages)}
 
-require(RcppEnsmallen)
-
-require(RcppArmadillo)
-
-require(methods)
-
-require(parallel)
-
-require(data.table)
-
-require(pracma)
-
-require(RSpectra)
-
-require(lokern)
-
-require(glmnet)
-
-require(mgcv)
-
-require(gamsel)
-
-require(fdapace)
-
-require(PtProcess)
-
-require(MASS)
 
 
 
