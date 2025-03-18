@@ -17,6 +17,7 @@ lam_lo = 5
 lam_up = 15
 ncores = 1
 
+## generate data for p=150 point processes will take some time.
 source("simu2.R")
 
 patient_sel = 1:n
@@ -122,7 +123,7 @@ for(ntrain in c(100,200,300)){
             auc_glmnet = ROC.Est.FUN(Ytest, xb, fpr0=0.05)[1]
         }
         
-        res_list[[paste(iter_name,";glmnet",sep="")]] = list(auc=auc_glmnet, beta=beta_glmnet)
+        res_list[[paste(iter_name,";GLMnet",sep="")]] = list(auc=auc_glmnet, beta=beta_glmnet)
         
         ## run GAM with count
         degrees = get_df_gamsel(mat_dx_train)
@@ -143,7 +144,7 @@ for(ntrain in c(100,200,300)){
             auc_gam = ROC.Est.FUN(Ytest, xb, fpr0=0.05)[1]
         }
         
-        res_list[[paste(iter_name,";gam",sep="")]] = list(auc=auc_gam, beta=beta_gam)
+        res_list[[paste(iter_name,";GAM",sep="")]] = list(auc=auc_gam, beta=beta_gam)
         
         
         ## run regression with PC scores
@@ -165,8 +166,7 @@ for(ntrain in c(100,200,300)){
                                         ridge_seq, ridge_gvec, gvec, 
                                         eps, maxiter, ncores)
         
-        res_list[[paste(iter_name,";fpca",sep="")]] = list(auc=res$auc, beta=res$beta_norm)
-        
+        res_list[[paste(iter_name,";GFLM",sep="")]] = list(auc=res$auc, beta=res$beta_norm)
         
         # distribution 
         
@@ -179,19 +179,27 @@ for(ntrain in c(100,200,300)){
                                         ridge_seq, ridge_gvec, gvec, 
                                         eps, maxiter, ncores)
         
-        res_list[[paste(iter_name,";distr",sep="")]] = list(auc=res$auc, beta=res$beta_norm)
+        res_list[[paste(iter_name,";GPAM",sep="")]] = list(auc=res$auc, beta=res$beta_norm)
         
     }
 }
 
 
+
 ## results
 
+# get AUC
 sapply(res_list, function(x){x$auc})
 
-filename = paste("resultSimu/", setting, "_", ffs, ".rda", sep="" )
-save(res_list, file=filename)
-quit(save="no")
+# get beta estimate;
+# based on which the variable selection performance can be calculated
+sapply(res_list, function(x){x$beta})
+
+
+
+# filename = paste("resultSimu/", setting, "_", ffs, ".rda", sep="" )
+# save(res_list, file=filename)
+# quit(save="no")
 
 
 
