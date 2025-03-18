@@ -26,7 +26,7 @@ require_packages = c("MCMCpack","data.table","survival","splines",
                     "Matrix", "Rcpp","RcppEnsmallen","RcppArmadillo",
                     "methods","parallel","pracma","RSpectra",
                     "lokern","glmnet","mgcv","gamsel","fdapace",
-                    "PtProcess", "MASS","adestr","ADCT")
+                    "PtProcess", "MASS")
 
 new_packages = lapply(require_packages, require, character.only = TRUE)
 
