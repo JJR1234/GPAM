@@ -11,5 +11,6 @@ run_Model1.R: run the simulation setting "Model 1" for one replication.
 
 run_Model2.R: run the simulation setting "Model 2" for one replication.
 
-run_Model2.R: run the simulation setting "Model 3" for one replication.
+run_Model3.R: run the simulation setting "Model 3" for one replication.
 
+The results returned by these R codes include the AUC estimate and Beta estimate for each method.
