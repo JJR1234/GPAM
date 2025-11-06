@@ -1,10 +1,10 @@
-## run simulation ##
-## setting: Model 2 ##
-
+## run Model 2 ##
 rm(list=ls())
-
-ffs = 1
+args = commandArgs(trailingOnly=TRUE)
+print(args)
+ffs = as.integer(args[1])
 set.seed(ffs)
+
 
 require(Rcpp)
 source("SS_FUN.R")
@@ -15,9 +15,9 @@ setting = "Model2"
 
 lam_lo = 10
 lam_up = 10
+
 ncores = 1
 
-## generate data for p=150 point processes will take some time.
 source("simu1.R")
 
 patient_sel = 1:n
@@ -42,7 +42,8 @@ kde_score = get_KDE_PCscore(data_all=data_df, patient_sel=patient_sel,
 gram_distr = get_gram_distribution_vec(data_all=data_df,
                                        patient_sel=patient_sel,
                                        feature_sel=feature_sel, 
-                                       ncores=ncores)
+                                       ncores=ncores,
+                                       Gaus_1=TRUE, Gaus_2=TRUE)
 
 d_fpca = 5
 d_distr = 10
@@ -59,8 +60,6 @@ alpha_fpca_list = lapply(seq_along(feature_sel), function(j){
     }else{
         scale(cbind(kde_score[[j]]$score, mat_dx[,j]) )
     }
-    
-    #cbind(kde_score[[j]]$score[,1:d_fpca], mat_dx[,j])
 })
 
 
@@ -95,6 +94,7 @@ for(ntrain in c(100,200,300)){
         grpid_fpca = cbind(c(0, cumsum(grpid_fpca)[-length(grpid_fpca)]), 
                            cumsum(grpid_fpca)-1)
         
+        
         alpha_x_distr = do.call(cbind, alpha_x_distr_list[1:p])
         alpha_fpca = do.call(cbind, alpha_fpca_list[1:p])
         
@@ -109,7 +109,7 @@ for(ntrain in c(100,200,300)){
         alpha_fpca_train = alpha_fpca[train_id,]
         
         
-        ### run glmnet 
+        ### run glmnet with count
         
         res = cv.glmnet(x=mat_dx_train, y=Ytrain, family='binomial',  alpha=0.9,
                         lambda.min.ratio=0.001,  nfolds=5)
@@ -123,7 +123,7 @@ for(ntrain in c(100,200,300)){
             auc_glmnet = ROC.Est.FUN(Ytest, xb, fpr0=0.05)[1]
         }
         
-        res_list[[paste(iter_name,";GLMnet",sep="")]] = list(auc=auc_glmnet, beta=beta_glmnet)
+        res_list[[paste(iter_name,";glmnet",sep="")]] = list(auc=auc_glmnet, beta=beta_glmnet)
         
         ## run GAM with count
         degrees = get_df_gamsel(mat_dx_train)
@@ -144,7 +144,7 @@ for(ntrain in c(100,200,300)){
             auc_gam = ROC.Est.FUN(Ytest, xb, fpr0=0.05)[1]
         }
         
-        res_list[[paste(iter_name,";GAM",sep="")]] = list(auc=auc_gam, beta=beta_gam)
+        res_list[[paste(iter_name,";gam",sep="")]] = list(auc=auc_gam, beta=beta_gam)
         
         
         ## run regression with PC scores
@@ -166,9 +166,9 @@ for(ntrain in c(100,200,300)){
                                         ridge_seq, ridge_gvec, gvec, 
                                         eps, maxiter, ncores)
         
-        res_list[[paste(iter_name,";GFLM",sep="")]] = list(auc=res$auc, beta=res$beta_norm)
+        res_list[[paste(iter_name,";fpca",sep="")]] = list(auc=res$auc, beta=res$beta_norm)
         
-        # distribution 
+        ## distribution (GPAM)
         
         Xtrain = cbind(1,alpha_x_distr_train)
         Xtest = cbind(1,alpha_x_distr_test)
@@ -179,7 +179,7 @@ for(ntrain in c(100,200,300)){
                                         ridge_seq, ridge_gvec, gvec, 
                                         eps, maxiter, ncores)
         
-        res_list[[paste(iter_name,";GPAM",sep="")]] = list(auc=res$auc, beta=res$beta_norm)
+        res_list[[paste(iter_name,";distr",sep="")]] = list(auc=res$auc, beta=res$beta_norm)
         
     }
 }
@@ -188,16 +188,11 @@ for(ntrain in c(100,200,300)){
 
 ## results
 
-# get AUC
 sapply(res_list, function(x){x$auc})
 
-# get beta estimate;
-# based on which the variable selection performance can be calculated
-sapply(res_list, function(x){x$beta})
-
-# filename = paste("resultSimu/", setting, "_", ffs, ".rda", sep="" )
-# save(res_list, file=filename)
-# quit(save="no")
+filename = paste("resultSimu/", setting, "_", ffs, ".rda", sep="" )
+save(res_list, file=filename)
+quit(save="no")
 
 
 

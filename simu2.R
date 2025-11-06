@@ -24,15 +24,8 @@ phi_k <- function(t=NULL, params=NULL,Ti=1){
 }
 
 myfun <- function(x=NULL, type=NULL){
-    res = matrix(1, nrow=length(x),ncol=4)
-    # res = cbind(as.numeric(x>0.5), x,x,x)
-    # type_arr = sapply(type, function(tt){
-    #     tmp = rep(0, ncol(res))
-    #     tmp[tt] = 1
-    #     tmp
-    # })
+    res = matrix(1, nrow=length(x),ncol=p0)
     coordinate = cbind(1:nrow(res),type)
-    #apply(res * t(type_arr),1,sum)
     res[coordinate]
 }
 
@@ -40,6 +33,7 @@ myfun <- function(x=NULL, type=NULL){
 n = 1000
 p0 = 4
 p = 150
+
 beta_density = 1*rep(c(1,-1),each=p0/2)
 
 ncomp = 3
@@ -132,8 +126,7 @@ xb_density[,2] = 2*as.numeric(xb_density[,2]>mu)
 xb_density[,3] = 0.05*(xb_density[,3]-mu)^2
 xb_density[,4] = 2*sin(xb_density[,4]*pi/mu)
 
-
-apply(xb_density,2,sd)
+# apply(xb_density,2,sd)
 xb_density_tmp = xb_density
 
 xb_density = xb_density %*% beta_density
@@ -143,6 +136,7 @@ Y = sapply(1:n, function(ii){
     sample(0:1, 1, replace = TRUE, c(1-xb[ii], xb[ii]) )
 })
 
+fx_true = t(t(xb_density_tmp) * beta_density)
 
 
 

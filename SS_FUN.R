@@ -174,9 +174,10 @@ get_gram_shape_vec <- function(data_all=NULL,patient_sel=NULL,
 }
 
 
-
 get_gram_distribution_vec <- function(data_all=NULL,patient_sel=NULL,
-                                      feature_sel=NULL, ncores=3){
+                                      feature_sel=NULL, ncores=3,
+                                      Gaus_1=TRUE, Gaus_2=TRUE,
+                                      Gaus_factor=1.0){
     
     data_all = data_all[is.element(feature_id, feature_sel),]
     
@@ -197,14 +198,46 @@ get_gram_distribution_vec <- function(data_all=NULL,patient_sel=NULL,
         ##
         na_list = sapply(x_list, function(x){any(is.na(x))})
         min_len = min(c(500,sum(!na_list)))
-        gamma = get_gamma_list(x_list[!na_list][1:min_len])
-        gram =  get_KT_gram_sum(x_list, gamma)
+        sigma = get_sigma_list(x_list[!na_list][1:min_len])
+        gram =  get_KT_gram_flex(x_list, sigma, Gaus_1, Gaus_2,Gaus_factor)
         #gram = KT_gram(x_list)
         
         list(gram=gram)
     })
     res
 }
+
+
+# get_gram_distribution_vec <- function(data_all=NULL,patient_sel=NULL,
+#                                       feature_sel=NULL, ncores=3){
+#     
+#     data_all = data_all[is.element(feature_id, feature_sel),]
+#     
+#     res = lapply(feature_sel, function(i){
+#         
+#         data_i = data_all[feature_id==i,]
+#         count_value = data_i[,.(count=.N), by=c("subject_num")]
+#         count_med = median(count_value$count)
+#         
+#         x_list = lapply(patient_sel, function(id){
+#             ind = which(data_i$subject_num == id)
+#             tt = NA
+#             if(length(ind) > 0){
+#                 tt =  data_i$time[ind]
+#             }
+#             tt
+#         })
+#         ##
+#         na_list = sapply(x_list, function(x){any(is.na(x))})
+#         min_len = min(c(500,sum(!na_list)))
+#         gamma = get_gamma_list(x_list[!na_list][1:min_len])
+#         gram =  get_KT_gram_sum(x_list, gamma)
+#         #gram = KT_gram(x_list)
+#         
+#         list(gram=gram)
+#     })
+#     res
+# }
 
 
 get_KDE_PCscore <- function(data_all=NULL,patient_sel=NULL,

@@ -25,13 +25,7 @@ phi_k <- function(t=NULL, params=NULL,Ti=1){
 
 myfun <- function(x=NULL, type=NULL){
     res = cbind(x-0.5, as.numeric(x>0.5),  (x-0.5)^2, sin(2*pi*x))
-    # type_arr = sapply(type, function(tt){
-    #     tmp = rep(0, ncol(res))
-    #     tmp[tt] = 1
-    #     tmp
-    # })
     coordinate = cbind(1:nrow(res),type)
-    #apply(res * t(type_arr),1,sum)
     res[coordinate]
 }
 
@@ -42,7 +36,9 @@ p = 150
 
 beta_density = 1*rep(c(1,-1),each=p0/2)
 
+
 ncomp = 3
+
 count_mat = matrix(runif(n*p,lam_lo,lam_up), ncol = p)
 
 mixprob_list = lapply(1:n, function(i){
@@ -131,7 +127,6 @@ xb_density[,3] = 3* xb_density[,3]
 xb_density[,4] = 0.3* xb_density[,4]
 
 
-
 apply(xb_density,2,sd)
 xb_density_tmp = xb_density
 
@@ -142,6 +137,6 @@ Y = sapply(1:n, function(ii){
     sample(0:1, 1, replace = TRUE, c(1-xb[ii], xb[ii]) )
 })
 
-
+fx_true = t(t(xb_density_tmp) * beta_density)
 
 
