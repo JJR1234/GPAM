@@ -40,7 +40,7 @@ TableS2.R: run this code to generate the results in Table S2 of the paper.
 FigureS1andS2.R: run this code to generate Figures S1 and S2 of the paper.
 
 ### (3) The following R codes can be used to replicate the results in real data application in the paper. 
-#### The ICU EHR dataset used in the paper can be downloaded from the website: https://physionet.org/content/challenge-2012/1.0.0/. In particular, the following files are used for analysis: Outcomes-a.txt, Outcomes-b.txt, Outcomes-c.txt, set-a.tar.gz, set-b.tar.gz, and set-c.tar.gz. Each of these files can be downloaded from the Folder Navigation located at the bottom of the webpage (No need to download the large ZIP file). After these files have been downloaded and all *.tar.gz files have been unzipped, the following codes can be run to reproduce the corresponding results.
+#### The ICU EHR dataset used in the paper can be downloaded from the website: https://physionet.org/content/challenge-2012/1.0.0/. Specifically, the following files are required for the analysis: Outcomes-a.txt, Outcomes-b.txt, Outcomes-c.txt, set-a.tar.gz, set-b.tar.gz, and set-c.tar.gz. These files can be downloaded individually from the *Folder Navigation* section at the bottom of the webpage (there is no need to download the large ZIP archive). After downloading the files and extracting all the .tar.gz archives, the following R code can be run to reproduce the corresponding results.
 
 preprocess_mimic.R: this code has to be run **first** to prprocess the dataset before running the codes below. Remember to change the **path_to_data** variable in the code to specify the correct path to the folder containing all the data files, that is Outcomes-a.txt, Outcomes-b.txt, Outcomes-c.txt, set-a/, set-b/, and set-c/.
 
