@@ -3,8 +3,20 @@
 # id: 139157, 149613 #
 rm(list=ls())
 require(data.table)
+
+folder_path <- "resultMIMIC/"
+
+# Check if the folder exists
+if (!dir.exists(folder_path)) {
+    dir.create(folder_path, recursive = TRUE)
+    cat("Folder created:", folder_path, "\n")
+} else {
+    cat("Folder already exists:", folder_path, "\n")
+}
+
 load("data_mimic.rda")
 set.seed(3000)
+
 names_plot = c("NIMAP","Na","MechVent")
 codes = c("Non-invasive Mean\n Arterial Blood Pressure\n Measurement",
           "Blood Sodium\n Measurement",
@@ -15,6 +27,7 @@ count_all = count_all[is.element(Parameter,names_plot),]
 count_all = count_all[,.(count=.N), by=c("subject_num")]
 count_all = count_all[count==length(codes),]
 id = sample(count_all$subject_num,2)
+
 
 filename ="resultMIMIC/Figure1.eps"
 
