@@ -25,7 +25,7 @@ if(length(new_packages)) {install.packages(new_packages)}
 
 ### (2) The following R scripts can be used to replicate the results in simulation studies in the paper. 
 
-#### Once all R scripts have been downloaded into the same folder and this folder has been set as the working directory in R, each script can be run independently to generate the corresponding results. Since each script may take several days to finish, it is recommended to first run a smaller number of replications for testing purposes.
+#### Once all R scripts have been downloaded into the same folder and this folder has been set as the working directory in R, each script can be run independently to generate the corresponding results. Since some scripts may take several days to finish, it is recommended to first run a smaller number of replications for testing purposes.
 
 **Table1.R**: run this script to generate the results in Table 1.
 
@@ -37,7 +37,7 @@ if(length(new_packages)) {install.packages(new_packages)}
 
 **TableS2.R**: run this script to generate the results in Table S2.
 
-**FigureS1andS2.R**: run this script to generate Figures S1 and S2.
+**FigureS1.R**: run this script to generate Figures S1.
 
 ### (3) The following R scripts can be used to replicate the results in real data application in the paper. 
 #### The ICU EHR dataset used in the paper can be downloaded from the website: https://physionet.org/content/challenge-2012/1.0.0/. Specifically, the following files are required for the analysis: Outcomes-a.txt, Outcomes-b.txt, Outcomes-c.txt, set-a.tar.gz, set-b.tar.gz, and set-c.tar.gz. These files can be downloaded individually from the *Folder Navigation* section at the bottom of the webpage (there is no need to download the large ZIP archive). After downloading the files and extracting all the .tar.gz archives, the following R scripts can be run to generate the corresponding results.
